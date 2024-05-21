@@ -81,6 +81,13 @@ layout: default
         >
           <i class="fab fa-flickr"></i>
         </a>
+        {% endif %} {% if site.itch_username %}
+        <a
+          class="social-link"
+          href="https://{{ site.itch_username }}.itch.io"
+        >
+          <i class="fas fa-gamepad"></i>
+        </a>
         {% endif %}
       </p>
 
