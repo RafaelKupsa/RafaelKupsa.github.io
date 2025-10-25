@@ -14,15 +14,42 @@
           <a class="navbar-brand" href="/">{{site.title}}</a>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-              {% for i in site.urls %}
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="{{ site.url}}{{site.baseurl}}{{ i.url }}"
-                  >{{ i.text }}</a
-                >
-              </li>
+              {% assign nav = site.urls %}
+              {% for i in nav %}
+                {% if i.text == "Projects" %}
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="{{ site.url }}{{ site.baseurl }}{{ i.url }}/"
+                      id="projectsDropdown"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >{{ i.text }}</a>
+                    <div class="dropdown-menu" aria-labelledby="projectsDropdown">
+                      {% assign visible_projects = site.author_project_details | where: "visibility", true %}
+                      {% for p in visible_projects %}
+                        {% assign slug = p.project_title | slugify %}
+                        {% if p.project_url and p.project_url != "" %}
+                          <a class="dropdown-item" href="{{ p.project_url }}" target="_blank" rel="noopener">
+                            {{ p.project_title }}
+                          </a>
+                        {% else %}
+                          <a class="dropdown-item" href="{{ site.url }}{{ site.baseurl }}/projects/{{ slug }}/">
+                            {{ p.project_title }}
+                          </a>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ site.url }}{{ site.baseurl }}{{ i.url }}">{{ i.text }}</a>
+                  </li>
+                {% endif %}
               {% endfor %}
+
 
             </ul>
           </div>
